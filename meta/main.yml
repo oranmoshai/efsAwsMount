@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: "fdfk"
+  license: BSD
+  description: install nfs-utils/nfs-common and mount aws efs 
+  min_ansible_version: 1.6
+  platforms:
+   - name: EL
+     versions:
+      - 5
+      - 6
+   - name: Fedora
+     versions:
+      - 16
+      - 17
+      - 18
+   - name: Ubuntu
+     versions:
+      - all
+  categories:
+   - aws
+dependencies: []

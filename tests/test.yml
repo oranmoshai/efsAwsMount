@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+
+  connection: local
+
+  vars:
+
+    efsFolderList:
+        - { folderPath: "/opt/efs", folderOwner: "root", folderGroup: "root", folderMode: "0644" , fileSystemId: "fs-xxxx"}
+    awsRegion: us-east-1
+    mountState: mounted
+    testDocker: "true"
+
+  roles:
+    - ../efsAwsMount

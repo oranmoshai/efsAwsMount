@@ -1,0 +1,21 @@
+---
+
+- name: Install nfs-common Debian
+  apt: name=nfs-common state=installed
+  when: ansible_os_family == 'Debian'
+
+- name: Install nfs-utils RedHat
+  apt: name=nfs-utils state=installed
+  when: ansible_os_family == 'RedHat'
+
+- file: path={{ item.folderPath }} state=directory mode={{ item.folderMode }} owner="{{ item.folderOwner }}" group="{{ item.folderGroup }}"
+  with_items: "{{ efsFolderList }}"
+
+- name: Get current availability-zone
+  shell: curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone
+  register: getCurrentAvailabilityZone
+  when: testDocker == "False"
+
+- mount: name={{ item.folderPath }} src={{ getCurrentAvailabilityZone.stdout }}.{{ item.fileSystemId }}.efs.{{ awsRegion }}.amazonaws.com:/ fstype=nfs4 opts=nfsvers=4.1 state={{ mountState}}
+  with_items: "{{ efsFolderList }}"
+  when: testDocker == "False"

@@ -1,0 +1,35 @@
+---
+sudo: required
+dist: trusty
+
+language: python
+python: "2.7"
+
+env:
+  - ANSIBLE_VERSION=latest
+
+before_install:
+  - sudo apt-get update -qq
+
+
+install:
+  # Install Ansible.
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install --no-binary ansible ansible; else pip install --no-binary ansible ansible==$ANSIBLE_VERSION; fi
+
+script:
+  # Check the role/playbook's syntax.
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+
+  # Run the role/playbook with ansible-playbook.
+  - ansible-playbook -s -i tests/inventory tests/test.yml -vvvv
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+    ansible-playbook -s -i tests/inventory tests/test.yml
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
