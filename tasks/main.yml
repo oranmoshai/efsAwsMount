@@ -12,10 +12,10 @@
   with_items: "{{ efsFolderList }}"
 
 - name: Get current availability-zone
-  shell: curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone
+  uri: url='http://169.254.169.254/latest/meta-data/placement/availability-zone' return_content=yes
   register: getCurrentAvailabilityZone
   when: testDocker == "False"
 
-- mount: name={{ item.folderPath }} src={{ getCurrentAvailabilityZone.stdout }}.{{ item.fileSystemId }}.efs.{{ awsRegion }}.amazonaws.com:/ fstype=nfs4 opts=nfsvers=4.1 state={{ mountState}}
+- mount: name={{ item.folderPath }} src={{ getCurrentAvailabilityZone.content }}.{{ item.fileSystemId }}.efs.{{ awsRegion }}.amazonaws.com:/ fstype=nfs4 opts=nfsvers=4.1 state={{ mountState}}
   with_items: "{{ efsFolderList }}"
   when: testDocker == "False"

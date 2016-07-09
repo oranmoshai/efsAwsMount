@@ -20,9 +20,4 @@ roles:
     present (default)
     absent
     mounted
-    unmounted
-
-
-## Dependencies
-
-Curl installed.
+    unmounted 
