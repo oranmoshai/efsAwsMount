@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fdfk/efsAwsMount.svg?branch=master)](https://travis-ci.org/fdfk/efsAwsMount)  
+
 # Ansible Role: efsAwsMount
 
 Create mount folder  
